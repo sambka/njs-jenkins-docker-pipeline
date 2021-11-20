@@ -5,20 +5,20 @@ services:
   #ports:
   # - 3000:3000
   mongodb:
-    image: mongo
+    image: ${MY_MONGO_IMAGE}
     ports:
-      - 27017:27017
+      - ${MY_MONGO_DB_HOST_PORT}:27017
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_ROOT_USERNAME=${MY_ADMIN_ID}
+      - MONGO_INITDB_ROOT_PASSWORD=${MY_ADMIN_PASSWORD}
     volumes:
-      - /data:/data/db
+      - ${MY_HOST_MONGO_DB_VOLUME}:/data/db
   mongo-express:
-    image: mongo-express
-    restart: always # fixes MongoNetworkError when mongodb is not ready when mongo-express starts
+    image: ${MY_MONGO_EXPRESS_IMAGE}
+    restart: ${MY_RESTART_MODE} # fixes MongoNetworkError when mongodb is not ready when mongo-express starts
     ports:
-      - 8080:8081
+      - ${MY_MONGO_EXPRESS_HOST_PORT}:8081
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
-      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MY_ADMIN_ID}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MY_ADMIN_PASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=${MY_MONGODB_SERVER_NAME}
